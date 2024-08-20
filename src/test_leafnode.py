@@ -4,7 +4,7 @@ from htmlnode import LeafNode
 
 class TestLeafNode(unittest.TestCase):
     def test_to_html(self):
-        leafnode = LeafNode("Keep calm and keep going", "p")
+        leafnode = LeafNode("p", "Keep calm and keep going")
 
         actual = leafnode.to_html()
         expected = "<p>Keep calm and keep going</p>"
@@ -12,7 +12,7 @@ class TestLeafNode(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_to_html_props(self):
-        leafnode = LeafNode("This is an anchor", "a", {
+        leafnode = LeafNode("a", "This is an anchor", {
             "href": "https://www.google.com"
         })
 
@@ -22,7 +22,7 @@ class TestLeafNode(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_to_html_tag(self):
-        leafnode = LeafNode("This is raw text")
+        leafnode = LeafNode(None, "This is raw text")
 
         actual = leafnode.to_html()
         excepted = "This is raw text"
