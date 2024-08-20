@@ -11,7 +11,7 @@ class TestHTMLNode(unittest.TestCase):
 
         actual = htmlnode.props_to_html()
         expected = ' href="https://www.google.com" target="_blank"'
-        
+
         self.assertEqual(actual, expected)
 
     def test_repr(self):
