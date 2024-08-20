@@ -13,8 +13,13 @@ class TestTextNode(unittest.TestCase):
         node = TextNode("This is an example of a text node", "italic")
         node2 = TextNode("This is another example of a text node", "bold")
 
-        self.assertEqual(node.__repr__(), f"TextNode({node.text}, {node.text_type}, {node.url})")
-        self.assertEqual(node2.__repr__(), f"TextNode({node2.text}, {node2.text_type}, {node2.url})")
+        node_actual = node.__repr__()
+        node2_actual = node2.__repr__()
+        node_expected = "TextNode(This is an example of a text node, italic, None)"
+        node2_expected = "TextNode(This is another example of a text node, bold, None)"
+
+        self.assertEqual(node_actual, node_expected)
+        self.assertEqual(node2_actual, node2_expected)
 
     def test_ineq(self):
         node = TextNode("Testing textnodes...", "bold")
