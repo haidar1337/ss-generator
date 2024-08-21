@@ -107,8 +107,8 @@ class TestSplitNodes(unittest.TestCase):
         node = TextNode("![Grey cat](https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcHUyMzMxNjM2LWltYWdlLWt3dnk3dzV3LmpwZw.jpg), that is an image of a cat", text_type_text)
 
         expected = [
-            TextNode(", that is an image of a cat", text_type_text),
             TextNode("Grey cat", text_type_image, "https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcHUyMzMxNjM2LWltYWdlLWt3dnk3dzV3LmpwZw.jpg"),
+            TextNode(", that is an image of a cat", text_type_text),
         ]
         actual = split_nodes_image([node])
 
@@ -118,9 +118,22 @@ class TestSplitNodes(unittest.TestCase):
         node = TextNode("[to google](https://www.google.com), that is a link to google", text_type_text)
 
         expected = [
+            TextNode("to google",  text_type_link, "https://www.google.com"),
             TextNode(", that is a link to google", text_type_text),
-            TextNode("to google",  text_type_link, "https://www.google.com")
         ]
         actual = split_nodes_link([node])
 
         self.assertListEqual(actual, expected)
+
+    def test_split_image_single(self):
+        node = TextNode(
+            "![image](https://www.example.com/image.png)",
+            text_type_text,
+        )
+        new_nodes = split_nodes_image([node])
+        self.assertListEqual(
+            [
+                TextNode("image", text_type_image, "https://www.example.com/image.png"),
+            ],
+            new_nodes,
+        )
