@@ -1,15 +1,10 @@
 from htmlnode import LeafNode
 from textnode import TextNode
-from util import split_nodes_delimiter
+from util import split_nodes_delimiter, extract_markdown_images, extract_markdown_links
 from text_types import *
 
 def main():
-     nodes = [TextNode("This is some *italic* text. **bold** is nice. Here is some python code to print: `print(\"Hello\")`", text_type_text)]
-     split_nodes = split_nodes_delimiter(split_nodes_delimiter(split_nodes_delimiter(nodes, "*", text_type_italic), "**", text_type_bold), "`", text_type_code) 
-
-     print(split_nodes)
-
-
+    pass
 
 def text_node_to_html_node(text_node):
     text_node_type = text_node.text_type
