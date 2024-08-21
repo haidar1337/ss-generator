@@ -42,3 +42,11 @@ class TestMarkdown(unittest.TestCase):
         actual = extract_markdown_images(mdtext) + extract_markdown_links(mdtext)
 
         self.assertListEqual(actual, expected)
+
+    def test_markdown_image_empty(self):
+        mdtext = "This is an image of a cat"
+
+        expected = []
+        actual = extract_markdown_images(mdtext)
+
+        self.assertListEqual(actual, expected)

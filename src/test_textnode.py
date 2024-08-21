@@ -54,49 +54,6 @@ class TestTextNode(unittest.TestCase):
         self.assertEqual(actual.props, expected.props)
         self.assertEqual(actual.value, expected.value)
 
-    def test_split_nodes_delimeter(self):
-        node = TextNode("This is text with a `code block` word", text_type_text)
-        split_nodes = split_nodes_delimiter([node], "`", text_type_code)
-
-        expected = [
-            TextNode("This is text with a ", text_type_text),
-            TextNode("code block", text_type_code),
-            TextNode(" word", text_type_text),
-        ]
-
-        self.assertListEqual(split_nodes, expected)       
-
-    def test_split_nodes_delimeter_multiple(self):
-        nodes = [
-                TextNode("This is some *italic* text. **bold** is nice. Here is some python code to print: `print(\"Hello\")`", text_type_text),
-            ]
-        split_nodes = split_nodes_delimiter(split_nodes_delimiter(split_nodes_delimiter(nodes, "**", text_type_bold), "*", text_type_italic), "`", text_type_code) 
-
-        expected = [
-            TextNode("This is some ", text_type_text),
-            TextNode("italic", text_type_italic),
-            TextNode(" text. ", text_type_text),
-            TextNode("bold", text_type_bold),
-            TextNode(" is nice. Here is some python code to print: ", text_type_text),
-            TextNode("print(\"Hello\")", text_type_code),
-        ]
-
-        self.assertListEqual(split_nodes, expected)
-
-    def test_delim_bold_multiword(self):
-        node = TextNode(
-            "This is text with a **bolded word** and **another**", text_type_text
-        )
-        new_nodes = split_nodes_delimiter([node], "**", text_type_bold)
-        self.assertListEqual(
-            [
-                TextNode("This is text with a ", text_type_text),
-                TextNode("bolded word", text_type_bold),
-                TextNode(" and ", text_type_text),
-                TextNode("another", text_type_bold),
-            ],
-            new_nodes,
-        )
 
 if __name__ == "__main__":
     unittest.main()

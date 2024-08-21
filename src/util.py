@@ -31,9 +31,70 @@ def extract_markdown_images(text):
     return out
 
 def extract_markdown_links(text):
+    # Negative lookbehind, match brackets with any text inside, and match parentheses with any text inside 
     regex = r"(?<!!)\[(.*?)\]\((.*?)\)"
     out  = re.findall(regex, text)
 
     return out
 
+def split_nodes_image(old_nodes):
+    out = []
     
+    for node in old_nodes:
+        images = extract_markdown_images(node.text)
+        if not images:
+            return old_nodes
+        
+        split_nodes = []
+        sections = []
+        stop = node.text
+        
+        for i in range(len(images)):
+            image_alt, image_link = images[i][0], images[i][1]
+            sections += stop.split(f"![{image_alt}]({image_link})", 1)
+            stop = stop.replace(f"{sections[0]}![{image_alt}]({image_link})", "")
+
+            for i in range(len(sections)):
+                if "!" in sections[i]:
+                    continue
+                if sections[i] == "":
+                    continue
+                if TextNode(sections[i], text_type_text) in split_nodes:
+                    continue 
+                split_nodes.append(TextNode(sections[i], text_type_text))
+
+            split_nodes.append(TextNode(image_alt, text_type_image, image_link))
+        
+        out.extend(split_nodes)
+    return out
+
+def split_nodes_link(old_nodes):
+    out = []
+    
+    for node in old_nodes:
+        links = extract_markdown_links(node.text)
+        if not links:
+            return old_nodes
+        
+        split_nodes = []
+        sections = []
+        stop = node.text
+        
+        for i in range(len(links)):
+            text, link = links[i][0], links[i][1]
+            sections += stop.split(f"[{text}]({link})", 1)
+            stop = stop.replace(f"{sections[0]}[{text}]({link})", "")
+
+            for i in range(len(sections)):
+                if "[" in sections[i]:
+                    continue
+                if sections[i] == "":
+                    continue
+                if TextNode(sections[i], text_type_text) in split_nodes:
+                    continue 
+                split_nodes.append(TextNode(sections[i], text_type_text))
+
+            split_nodes.append(TextNode(text, text_type_link, link))
+        
+        out.extend(split_nodes)
+    return out
