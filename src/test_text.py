@@ -52,3 +52,7 @@ class TestText(unittest.TestCase):
         ]
 
         self.assertListEqual(expected, text_to_textnodes(text))
+
+
+if __name__ == "__main__":
+    unittest.main()

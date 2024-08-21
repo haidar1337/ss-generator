@@ -50,3 +50,7 @@ class TestMarkdown(unittest.TestCase):
         actual = extract_markdown_images(mdtext)
 
         self.assertListEqual(actual, expected)
+
+
+if __name__ == "__main__":
+    unittest.main()

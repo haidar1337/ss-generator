@@ -1,5 +1,5 @@
-
 from textnode import TextNode
+from block_types import *
 from text_types import *
 import re as re
 
@@ -96,3 +96,39 @@ def text_to_textnodes(text):
     out = split_nodes_link(split_nodes_image(split_nodes_delimiter(split_nodes_delimiter(split_nodes_delimiter([node], "**", text_type_bold), "*", text_type_italic), "`", text_type_code)))
 
     return out
+
+def markdown_to_blocks(markdown):
+    blocks = markdown.split("\n\n")
+    filtered_blocks = []
+    for block in blocks:
+        if block == "":
+            continue
+        block = block.strip()
+        filtered_blocks.append(block)
+    return filtered_blocks
+
+def block_to_block_type(block):
+    seperated = block.split("\n")
+    if block.startswith("```") and block.endswith("```"):
+        return block_type_code
+    elif block.startswith(("#", "##", "###", "####", "#####", "######")):
+        return block_type_heading
+    elif block.startswith("1. "):
+        i = 1
+        for line in seperated:
+            if not line.startswith(f"{i}. "):
+                return block_type_paragraph
+            i += 1
+        return block_type_ordered_list
+    
+    for i in range(len(seperated)):
+        element = seperated[i]
+        condition = i == len(seperated) - 1
+        if element.startswith(("- ", "* ")) and condition:
+            return block_type_unordered_list
+        elif element.startswith(">") and condition:
+            return block_type_quote
+        
+    return block_type_paragraph
+
+    
