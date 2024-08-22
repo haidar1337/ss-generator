@@ -1,6 +1,6 @@
 import unittest
 
-from util import extract_markdown_images, extract_markdown_links
+from util import extract_markdown_images, extract_markdown_links, extract_title
 
 class TestMarkdown(unittest.TestCase):
     def test_markdown_image_extraction(self):
@@ -50,6 +50,16 @@ class TestMarkdown(unittest.TestCase):
         actual = extract_markdown_images(mdtext)
 
         self.assertListEqual(actual, expected)
+
+    def test_extract_title(self):
+        markdown = "# Hello"
+
+        self.assertEqual("Hello", extract_title(markdown))
+
+    def test_extract_title_none(self):
+        markdown = "Hello"
+
+        self.assertRaises(Exception, lambda: extract_title(markdown))
 
 
 if __name__ == "__main__":

@@ -30,7 +30,7 @@ def text_node_to_html_node(text_node):
     elif text_node_type == "code":
         return LeafNode("code", text_node_text)
     elif text_node_type == "link":
-        return LeafNode("a", text_node_type, {
+        return LeafNode("a", text_node_text, {
             "href": text_node_url
         })
     elif text_node_type == "image":

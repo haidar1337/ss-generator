@@ -21,21 +21,8 @@ class HTMLNode:
         return out
     
     def __repr__(self):
-        out = f"HTMLNode\nname: {self.tag}\nvalue: {self.value}\n"
+        return f"HTMLNode({self.tag}, {self.value}, children: {self.children}, {self.props})"
 
-        if self.children is not None and self.children:
-            out += "children: [\n"
-            for child in self.children:
-                out += f"{child.tag}\n"
-            out += "]\n"
-
-        if self.props is not None and self.props:
-            out += "properties: {\n"
-            for k, v in self.props.items():
-                out += k + ": " + v + "\n"
-            out += '}'
-
-        return out
     
 
 class LeafNode(HTMLNode):
